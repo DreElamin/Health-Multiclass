@@ -80,38 +80,115 @@ Non-parametric instance-based classifier using Euclidean distance with majority 
 
 ---
 
+## 🎨 NEW: Interactive Dashboard
+
+**We've built a polished, interactive web dashboard for exploring the models and making predictions!**
+
+### Quick Start
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Launch the dashboard
+streamlit run dashboard.py
+
+# Or use the launch script
+./run_dashboard.sh
+```
+
+The dashboard will open in your browser at `http://localhost:8501`.
+
+### Dashboard Features
+
+- **🏠 Home**: Project overview with key metrics and visualizations
+- **🔍 Symptom Checker**: Interactive tool to input symptoms and get real-time predictions from all models
+- **📊 Model Comparison**: Comprehensive performance analysis with visualizations
+  - Accuracy comparisons (Top-1 and Top-3)
+  - Per-class metrics (Precision, Recall, F1)
+  - Confusion matrices
+  - Feature importance analysis
+- **📈 Data Insights**: Explore dataset statistics and distributions
+  - Age, gender, symptom distributions
+  - Disease category breakdown
+  - Class imbalance visualization
+- **ℹ️ About**: Detailed methodology, findings, and references
+
+See [DASHBOARD_README.md](DASHBOARD_README.md) for complete dashboard documentation.
+
+---
+
 ## Repo Structure
 
 ```
-├── knn.py
-├── decision_tree.py
-├── logistic_regression.py
-├── neural_network.py
-├── data/
-│   └── disease_dataset.csv
-└── README.md
+├── dashboard.py                          # NEW: Interactive Streamlit dashboard
+├── run_dashboard.sh                      # NEW: Launch script for dashboard
+├── DASHBOARD_README.md                   # NEW: Dashboard user guide
+├── requirements.txt                      # NEW: Python dependencies
+├── utils/
+│   ├── __init__.py                       # NEW: Utils module
+│   └── model_utils.py                    # NEW: Data loading & model training
+├── Knearest.py                           # K-Nearest Neighbors implementation
+├── decisiontree.py                       # Decision Tree implementation
+├── logistic regression.py                # Logistic Regression implementation
+├── disease_Neural_Net.py                 # Neural Network implementation
+├── preprocess_Neural_Net.py              # Neural Network preprocessing
+├── Disease_symptom_and_patient_profile_dataset 2.csv  # Dataset
+└── README.md                             # This file
 ```
 
 ---
 
 ## Requirements
 
+### For Individual Scripts
+
 ```bash
 pip install scikit-learn pandas numpy imbalanced-learn matplotlib
 ```
+
+### For Interactive Dashboard
+
+```bash
+pip install -r requirements.txt
+```
+
+This includes: streamlit, pandas, numpy, scikit-learn, matplotlib, seaborn, plotly, imbalanced-learn, joblib
 
 ---
 
 ## Usage
 
-Each model script can be run independently. Ensure the dataset CSV is available at the expected path (see each file for configuration).
+### Option 1: Interactive Dashboard (Recommended)
+
+The easiest way to explore the models and make predictions:
 
 ```bash
-python logistic_regression.py
-python decision_tree.py
-python neural_network.py
-python knn.py
+# Install dependencies
+pip install -r requirements.txt
+
+# Launch dashboard
+streamlit run dashboard.py
 ```
+
+Features:
+- Interactive symptom input form
+- Real-time predictions from all 4 models
+- Comprehensive performance visualizations
+- Dataset exploration tools
+
+### Option 2: Run Individual Scripts
+
+Each model script can be run independently:
+
+```bash
+python "logistic regression.py"
+python decisiontree.py
+python disease_Neural_Net.py
+python Knearest.py
+```
+
+Note: Some scripts download data from Kaggle automatically.
 
 ---
 
