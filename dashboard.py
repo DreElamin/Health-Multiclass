@@ -30,9 +30,24 @@ st.markdown("""
         padding: 0rem 1rem;
     }
     .stMetric {
-        background-color: #f0f2f6;
-        padding: 15px;
-        border-radius: 10px;
+        background-color: #e3f2fd;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid #1976d2;
+    }
+    .stMetric label {
+        color: #1565c0 !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+    .stMetric [data-testid="stMetricValue"] {
+        color: #0d47a1 !important;
+        font-size: 1.8rem !important;
+        font-weight: 700 !important;
+    }
+    .stMetric [data-testid="stMetricDelta"] {
+        color: #424242 !important;
+        font-size: 0.85rem !important;
     }
     .stTabs [data-baseweb="tab-list"] {
         gap: 24px;
@@ -40,18 +55,25 @@ st.markdown("""
     .stTabs [data-baseweb="tab"] {
         height: 50px;
         padding: 0px 24px;
-        background-color: #f0f2f6;
+        background-color: #f5f5f5;
         border-radius: 10px 10px 0px 0px;
+        color: #424242;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #1f77b4;
-        color: white;
+        background-color: #1976d2;
+        color: white !important;
     }
     h1 {
-        color: #1f77b4;
+        color: #1565c0;
+        font-weight: 700;
     }
     h2 {
-        color: #2c3e50;
+        color: #1976d2;
+        font-weight: 600;
+    }
+    h3 {
+        color: #424242;
+        font-weight: 600;
     }
     .reportview-container .markdown-text-container {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -75,7 +97,7 @@ if 'models_trained' not in st.session_state:
 
 # Sidebar
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/000000/health-checkup.png", width=80)
+    st.markdown("# 🏥")
     st.title("Navigation")
 
     page = st.radio(
@@ -96,7 +118,7 @@ with st.sidebar:
 
     st.divider()
 
-    if st.button("🔄 Load/Reload Data", use_container_width=True):
+    if st.button("🔄 Load/Reload Data", width="stretch"):
         with st.spinner("Loading data..."):
             try:
                 data_dict = load_and_prepare_data()
@@ -107,7 +129,7 @@ with st.sidebar:
             except Exception as e:
                 st.error(f"Error loading data: {str(e)}")
 
-    if st.session_state.data_loaded and st.button("🚀 Train Models", use_container_width=True):
+    if st.session_state.data_loaded and st.button("🚀 Train Models", width="stretch"):
         with st.spinner("Training models... This may take a minute."):
             try:
                 models_dict = train_all_models(
@@ -230,7 +252,7 @@ if page == "🏠 Home":
             showlegend=True
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     st.divider()
 
@@ -270,7 +292,7 @@ elif page == "🔍 Symptom Checker":
         with col2:
             st.markdown("#### 🎯 Predictions")
 
-            if st.button("🔮 Get Predictions", use_container_width=True, type="primary"):
+            if st.button("🔮 Get Predictions", width="stretch", type="primary"):
                 # Create input dataframe
                 patient_data = pd.DataFrame([{
                     "Fever": fever,
@@ -323,7 +345,7 @@ elif page == "🔍 Symptom Checker":
                             xaxis=dict(range=[0, 1])
                         )
 
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, width="stretch")
 
                 # Show symptom summary
                 st.markdown("---")
@@ -383,7 +405,7 @@ elif page == "📊 Model Comparison":
         st.markdown("### 📋 Detailed Metrics Table")
         st.dataframe(
             metrics_df.style.highlight_max(axis=0, subset=['Accuracy', 'Top-3 Accuracy', 'Weighted F1', 'Macro F1']),
-            use_container_width=True
+            width="stretch"
         )
 
         # Visualizations
@@ -418,7 +440,7 @@ elif page == "📊 Model Comparison":
                     barmode='group',
                     height=400
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
             with col2:
                 # F1 scores comparison
@@ -441,7 +463,7 @@ elif page == "📊 Model Comparison":
                     barmode='group',
                     height=400
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
         with tab2:
             # Per-class performance
@@ -492,9 +514,9 @@ elif page == "📊 Model Comparison":
                 barmode='group',
                 height=400
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
-            st.dataframe(class_df, use_container_width=True)
+            st.dataframe(class_df, width="stretch")
 
         with tab3:
             # Confusion matrices
@@ -521,7 +543,7 @@ elif page == "📊 Model Comparison":
                         title=model_name
                     )
                     fig.update_layout(height=400)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
 
         with tab4:
             st.markdown("#### Feature Importance (Decision Tree)")
@@ -554,7 +576,7 @@ elif page == "📊 Model Comparison":
                     yaxis_title='Feature',
                     height=600
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
             else:
                 st.info("Train models to see feature importance.")
 
@@ -583,10 +605,10 @@ elif page == "📈 Data Insights":
                 st.metric("Original Diseases", df['Disease'].nunique())
 
             st.markdown("### 🔍 Sample Data")
-            st.dataframe(df.head(20), use_container_width=True)
+            st.dataframe(df.head(20), width="stretch")
 
             st.markdown("### 📊 Feature Summary")
-            st.dataframe(df.describe(), use_container_width=True)
+            st.dataframe(df.describe(), width="stretch")
 
         with tab2:
             st.markdown("### 🔬 Feature Distributions")
@@ -603,7 +625,7 @@ elif page == "📈 Data Insights":
                     color_discrete_sequence=['#1f77b4']
                 )
                 fig.update_layout(height=300)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
                 # Gender distribution
                 gender_counts = df['Gender'].value_counts()
@@ -613,7 +635,7 @@ elif page == "📈 Data Insights":
                     hole=.3
                 )])
                 fig.update_layout(title='Gender Distribution', height=300)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
             with col2:
                 # Symptom frequencies
@@ -631,7 +653,7 @@ elif page == "📈 Data Insights":
                     yaxis_title='Count',
                     height=300
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
                 # Blood Pressure & Cholesterol
                 bp_counts = df['Blood Pressure'].value_counts()
@@ -641,7 +663,7 @@ elif page == "📈 Data Insights":
                     hole=.3
                 )])
                 fig.update_layout(title='Blood Pressure Distribution', height=300)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
         with tab3:
             st.markdown("### 🎯 Disease Category Distribution")
@@ -667,7 +689,7 @@ elif page == "📈 Data Insights":
                     height=400,
                     xaxis={'categoryorder': 'total descending'}
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
             with col2:
                 st.markdown("#### Category Breakdown")
@@ -690,7 +712,7 @@ elif page == "📈 Data Insights":
                 yaxis_title='Disease',
                 height=600
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
 else:  # About page
     st.title("ℹ️ About This Project")
