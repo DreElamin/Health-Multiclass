@@ -91,8 +91,8 @@ def load_and_prepare_data():
     Load and prepare the dataset for modeling.
     Returns a dictionary with all necessary data components.
     """
-    # Find the CSV file
-    csv_path = Path("/home/user/Health-Multiclass/Disease_symptom_and_patient_profile_dataset 2.csv")
+    # Find the CSV file (relative to this script's location)
+    csv_path = Path(__file__).parent.parent / "Disease_symptom_and_patient_profile_dataset 2.csv"
 
     if not csv_path.exists():
         raise FileNotFoundError(f"Dataset not found at {csv_path}")
@@ -206,7 +206,6 @@ def train_all_models(X_train, y_train, preprocessor):
 
     # 1. Logistic Regression
     log_reg = LogisticRegression(
-        multi_class="multinomial",
         solver="lbfgs",
         max_iter=1000,
         random_state=RANDOM_STATE
